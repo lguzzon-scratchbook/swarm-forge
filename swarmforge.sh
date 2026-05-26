@@ -296,6 +296,7 @@ TMUX_SOCKET="$(< "$TMUX_SOCKET_FILE")"
 
 if [[ $# -lt 2 ]]; then
   echo "Usage: notify-agent.sh <target-role-or-index> \"message\"" >&2
+  echo "       notify-agent.sh <target-role-or-index> --file <message-file>" >&2
   exit 1
 fi
 
@@ -323,7 +324,22 @@ TARGET_SESSION=$(resolve_session "$1") || {
   exit 1
 }
 
-MESSAGE="${*:2}"
+shift
+if [[ "${1:-}" == "--file" ]]; then
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: notify-agent.sh <target-role-or-index> --file <message-file>" >&2
+    exit 1
+  fi
+  MESSAGE_FILE="$2"
+  if [[ ! -f "$MESSAGE_FILE" ]]; then
+    echo "Message file not found: $MESSAGE_FILE" >&2
+    exit 1
+  fi
+  MESSAGE="$(< "$MESSAGE_FILE")"
+else
+  MESSAGE="$*"
+fi
+
 tmux -S "$TMUX_SOCKET" send-keys -t "${TARGET_SESSION}:0.0" -l -- "$MESSAGE"
 sleep 0.15
 tmux -S "$TMUX_SOCKET" send-keys -t "${TARGET_SESSION}:0.0" C-m
@@ -504,7 +520,7 @@ for (( i = 1; i <= ${#ROLES[@]}; i++ )); do
   echo -e "  ${DISPLAY_NAMES[$i]}: ${SESSIONS[$i]}"
 done
 echo ""
-echo -e "${GREEN}Tip: Use $WORKING_DIR/swarmtools/notify-agent.sh <role-or-index> \"message\" while the swarm is running.${RESET}"
+echo -e "${GREEN}Tip: Use $WORKING_DIR/swarmtools/notify-agent.sh <role-or-index> --file <message-file> while the swarm is running.${RESET}"
 echo -e "${GREEN}Tip: Reattach manually with 'tmux -S $TMUX_SOCKET attach-session -t <session-name>' if needed.${RESET}"
 echo ""
 

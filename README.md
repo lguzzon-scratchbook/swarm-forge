@@ -70,7 +70,7 @@ The default three-agent workflow is:
 7. Startup creates a git worktree for each window under `.worktrees/<worktree>`, unless the worktree field is `none` or `master`.
 8. Startup creates `swarmtools/notify-agent.sh` for that project.
 9. SwarmForge creates tmux sessions, opens Terminal windows, and launches each configured backend in its assigned worktree.
-10. Roles communicate through helper commands such as `notify-agent.sh`.
+10. Roles communicate through helper commands such as `notify-agent.sh <role> --file <message-file>`.
 
 ## The `swarmforge.conf` File
 
