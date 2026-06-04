@@ -21,7 +21,7 @@
 - If one or more messages arrive while you are busy:
   - Save each complete message as its own file in a local untracked `pending-messages/` directory in your assigned worktree.
   - Name queued message files with this format: `PP-YYYYMMDD-HHMMSS-source.txt`, where `PP` is the two-digit priority.
-  - Use priority `00` for architect handoffs to coder, cleaner, or hardender.
+  - Use priority `00` for QA handoffs to specifier, coder, cleaner, architect, or hardender.
   - Use priority `50` for normal messages unless a role prompt or explicit user instruction sets a different priority.
   - Finish the current job before acting on queued messages.
   - After the current job is complete and any required handoff has been sent, process queued message files in sorted filename order.
