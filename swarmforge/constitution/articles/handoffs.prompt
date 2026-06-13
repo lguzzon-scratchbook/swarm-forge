@@ -11,6 +11,7 @@
 - Keep `logbook.jsonl` as append-only JSON Lines. Each line is one complete JSON object; never rewrite, reformat, sort, summarize, or merge existing entries.
 - Each log entry must include `timestamp`, `direction`, `message`, and `note` fields. Use `direction` values `received`, `sent`, or `queued`.
 - Use `.swarmforge/notify/request` plus `notify-agent.sh` to append normal sent, received, queued, and resend-request entries to `logbook.jsonl`.
+- Run `notify-agent.sh` with no environment-variable prefix. Do not run `SWARMFORGE_ROLE=<role> notify-agent.sh`; startup already sets `SWARMFORGE_ROLE`, and the handoff command must stay stable.
 - Do not hand-edit handoff logbook entries unless a helper script fails and explicit user direction says to repair the logbook manually.
 - If a merge conflict occurs in `logbook.jsonl`, keep all complete JSON lines from both sides. Preserve message text exactly; order chronologically when obvious, otherwise keep both groups intact.
 - Commit `logbook.jsonl` updates with the next substantive role-owned commit or outgoing handoff commit. Make a logbook-only commit only when no other work will be committed for that handoff, such as a queued handoff that requires no role-specific work.
